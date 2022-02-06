@@ -24,20 +24,19 @@ function Home({navigation}) {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getNoodles());
-  }, []);
+    loading ? dispatch(getNoodles()) : sortItems();
+  }, [loading]);
 
-  const sortItems = (data) => {
-    data.sort((a, b) => {
+  const sortItems = () => {
+    const sorted = [...restaurants].sort((a, b) => {
       let a1 = a.Stars.toString().toLowerCase();
       let b1 = b.Stars.toString().toLowerCase();
       if (a1 > b1) return 1;
       if (a1 < b1) return -1;
       return 0;
     });
-    setSortedData(data);
+    isSorted ? setSortedData(sorted) : setSortedData(restaurants);
     setIsSorted(!isSorted);
-    console.log(restaurants[0], sortedData[0])
   };
   return (
     <ScrollView style={{flex: 1}} keyboardShouldPersistTaps="handled">
@@ -59,28 +58,7 @@ function Home({navigation}) {
       {loading ? (
         <Apploading />
       ) : (
-        <View>
-          {isSorted ? (
-            <View>{renderRestaurants(sortedData)}</View>
-          ) : (
-            <View>{renderRestaurants(restaurants)}</View>
-          )}
-        </View>
-        // <View>
-        //   {isSorted ? (
-        //     <FlatList
-        //       data={sortedData}
-        //       renderItem={restaurantCards}
-        //       keyExtractor={item => item.Variety}
-        //     />
-        //   ) : (
-        //     <FlatList
-        //       data={restaurants}
-        //       renderItem={restaurantCards}
-        //       keyExtractor={item => item.Variety}
-        //     />
-        //   )}
-        // </View>
+        <View>{renderRestaurants(sortedData)}</View>
       )}
     </ScrollView>
   );

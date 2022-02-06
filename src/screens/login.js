@@ -19,16 +19,14 @@ function Login() {
     var regexp = /\S+@\S+\.\S+/;
     setEmailError(!regexp.test(email.toLowerCase()));
     setNameError(!(name.length > 3));
-    return emailError || nameError
+    return emailError || nameError;
   };
 
   const onButtonClick = () => {
     let form = {};
     form['name'] = name;
     form['email'] = email;
-    if(!validate()){
-      dispatch(login(form))
-    }
+    validate() ?  null : dispatch(login(form));
   };
 
   return (
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#FF95C5'
+    color: '#FF95C5',
   },
   inputView: {
     padding: 5,
